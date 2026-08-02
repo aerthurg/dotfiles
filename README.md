@@ -1,177 +1,278 @@
-# Arch Installation Steps
+# Arch Linux + Hyprland Dotfiles & Installation Guide
 
-1: Select Arch Linux install medium (x86_64, UEFI)
-- It will lead you to the terminal under root@archiso
+![Arch Linux](https://img.shields.io/badge/OS-Arch_Linux-blue?logo=arch-linux)
+![Hyprland](https://img.shields.io/badge/WM-Hyprland-blueviolet?logo=hyprland)
+![Wayland](https://img.shields.io/badge/Display-Wayland-red)
+![GNU Stow](https://img.shields.io/badge/Dotfiles-GNU_Stow-informational)
 
-2: Connect to the WiFi via iwct
-- Run: iwct
-- Run: device list
+This repository contains a complete guide for a manual base Arch Linux installation, as well as modular post-installation scripts and dotfiles managed with **GNU Stow** to fully replicate my Hyprland desktop environment on any fresh installation.
 
-Check you wireless device name on the list (mine was wlan0), then:
-- Run: station wlan0 scan
-- Run: station wlan0 get-networks
-- Run: station wlan0 connect <YOUR_WIFI_NAME>
+---
 
-And then you enter your WiFi password when asked.
+## 🛠 Repository Architecture
 
-3: Set a password to the root user (on the live ISO)
-- Run: passwd
+This repository separates core system installation scripts, declarative package declarations, and dotfiles:
 
-Enter the new password when asked.
+```text
+dotfiles/
+├── install.sh                  # Main entrypoint script
+├── README.md                   # Installation guide & documentation
+├── lib/
+│   └── utils.sh                # Shared logging and utility helper functions
+├── packages/
+│   ├── official.txt            # Pacman packages list
+│   └── aur.txt                 # AUR packages list
+├── scripts/
+│   ├── 01-packages.sh          # System updates, pacman packages & yay installation
+│   ├── 02-system-setup.sh      # Services activation (NetworkManager, Bluetooth, Ly)
+│   └── 03-stow.sh              # Automatic symlinking of configs via GNU Stow
+└── stow/                       # Dotfiles directories mapped to $HOME
+    ├── ghostty/
+    ├── gtk/
+    ├── hypr/
+    ├── mise/
+    ├── nvim/
+    ├── rofi/
+    ├── starship/
+    ├── system/
+    └── waybar/
+```
 
-4: Disk partition with cfdisk
-- Run: fdisk -l (to identify your disk - mine was /dev/nvme0n1)
-- Run: cfdisk /dev/nvme0n1
+---
 
-Use cfdisk to delete all the existing partitions from any previous installation, then:
-- Create a new 1G EFI partition for the boot
-- Create a new 32GB (minimum recommended for Arch) Linux filesystem partition for the root
-- Create a new 4G Linux swap partition
-- Create a new Linux filesystem with the remaining space for the home.
+## 🚀 Part 1: Base Arch Linux Installation (Live ISO)
 
-Then write everything to the disk to properly create the partitions.
+Follow these steps while booted into the **Arch Linux Live ISO environment**.
 
-5: Formatting the newly created partitions with mkfs
-- Run: mkfs.ext4 /dev/nvme0n1p2 (to format the partition created for the root folder)
-- Run: mkswap /dev/nvme0n1p3 (to format the swap partition)
-- Run: mkfs.fat -F 32 /dev/nvme0n1p1 (to format the EFI partition)
-- Run: mkfs.ext4 /dev/nvme0n1p4 (to format the partition created for the home folder)
+### 1. Boot into the ISO
+Select the **Arch Linux install medium (x86_64, UEFI)**. You will be greeted by the root prompt: `root@archiso:~#`.
 
-5: Mounting the newly formatted partitions
-- Run: mount /dev/nvme0n1p2 /mnt (for mounting the root partition)
-- Run: mkdir /mnt/home && mount /dev/nvme0n1p4 /mnt/home (for mounting /home within /mnt)
-- Run: mkdir /mnt/boot && mount /dev/nvme0n1p1 /mnt/boot (for mounting /boot within /mnt)
-- Run: swapon /dev/nvme0n1p3 (for turning on the swap partition)
+### 2. Connect to Wi-Fi (iwctl)
+If you are on Wi-Fi, establish an internet connection using `iwctl`:
 
-Then you can run lsblk to check the newly mounted partitions.
+```bash
+iwctl
+device list
+station wlan0 scan
+station wlan0 get-networks
+station wlan0 connect <YOUR_WIFI_NAME>
+exit
+```
+*(Replace `wlan0` with your actual wireless interface name if different).*
 
-6: Setting up arch package mirrors
-- Run: reflector --latest 5 --country US --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
-- Run: cat /etc/pacman.d/mirrorlist (to check the updated list of 5 best mirrors)
+### 3. Set ISO Root Password
+Set a temporary root password for the live environment session:
 
-The reflector will save the best 5 servers from the US to download your packages from.
+```bash
+passwd
+```
 
-7: Installing base packages from the live ISO on the new system build
-- Run: pacstrap -K /mnt base linux linux-firmware networkmanager neovim base-devel amd-ucode git man-db man-pages reflector
+### 4. Disk Partitioning (cfdisk)
+Identify your disk name (e.g., `/dev/nvme0n1` or `/dev/sda`):
 
-The only thing brought from the live ISO is the mirrorlist. Before executing pacstrap, no package was installed in the newly mounted partitions. The pacstrap command installs the most basic set of packages we gonna need to first interact with our new system build.
+```bash
+fdisk -l
+cfdisk /dev/nvme0n1
+```
 
-OBS.: In case you computer has an Intel CPU, install intel-ucode instead of amd-ucode.
+Delete existing partitions if needed, then create the following partition scheme:
+* **EFI Boot:** `1G` (Type: `EFI System`)
+* **Root (`/`):** `32G` minimum (Type: `Linux filesystem`)
+* **Swap:** `4G` (Type: `Linux swap`)
+* **Home (`/home`):** Remaining space (Type: `Linux filesystem`)
 
-8: Generating the fstab
-- Run: genfstab -U /mnt >>> /mnt/etc/fstab
-- Run: cat /mnt/etc/fstab (for checking the newly generated UUIDs)
+Select **Write** and type `yes` to save changes to disk.
 
-The genfstab command inspects all the mounted partitions and issues a valid /etc/fstab configuration list using standard storage identifiers like UUIDs or labels for the system to automatically identify and mount them whenever it is started.
+### 5. Format Partitions
+Format the newly created partitions:
 
-9: System configuration (migrating from live ISO to system boot)
-- Run: arch-chroot /mnt (to enter the system boot)
-- Run: ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime (for setting up the timezone)
-- Run: hwclock --systohc (recommended by arch wiki)
+```bash
+# Format Root partition
+mkfs.ext4 /dev/nvme0n1p2
 
-10: Setting up localization
-- Run: nvim /etc/locale.gen
-- Run: locale-gen
+# Format Swap partition
+mkswap /dev/nvme0n1p3
 
-Uncomment the locale you gonne use (in my case I uncommented en_US.UTF8 and pt_BR.UTF8). Then add to the /etc/locale.conf file the following: LANG=en_US.UTF-8.
+# Format EFI Boot partition
+mkfs.fat -F 32 /dev/nvme0n1p1
 
-11: Adding a name to the system (hostname)
-- Run: nvim /etc/hostname
+# Format Home partition
+mkfs.ext4 /dev/nvme0n1p4
+```
 
-And simply add your desired hostname.
+### 6. Mount Partitions
+Mount the formatted partitions into `/mnt`:
 
-12: Enabling network manager as a system service (to start on every boot)
-- Run: systemctl enable NetworkManager
+```bash
+# Mount Root
+mount /dev/nvme0n1p2 /mnt
 
-13: Set password to the root user and create a new user account (on the system boot)
-- Run: passwd (and assign a new password)
-- Run: useradd -m -G wheel,users <YOUR_USERNAME>
-- Run: passwd <YOUR_USERNAME>
+# Mount Home
+mkdir -p /mnt/home && mount /dev/nvme0n1p4 /mnt/home
 
-Then we need to enable users on the wheel group to be able to execute sudo commands.
-- Run: EDITOR=nvim visudo
+# Mount Boot
+mkdir -p /mnt/boot && mount /dev/nvme0n1p1 /mnt/boot
 
-Look for the line starting with '%wheel' and uncomment it.
+# Enable Swap
+swapon /dev/nvme0n1p3
 
-14: Setting up the bootloader
-- Run: pacman -S grub efibootmgr
-- Run: grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
-- Run: grub-mkconfig -o /boot/grub/grub.cfg
+# Verify mounting setup
+lsblk
+```
 
-15: Unmounting all partitions and rebooting (finish installation)
-- Run: umount -R /mnt
-Run: reboot
+### 7. Configure Package Mirrors
+Select the fastest 5 mirrors using Reflector:
 
-16: After the first reboot:
-- Run: nmcli device wifi connect <YOUR_WIFI_NAME> password <YOUR_WIFI_PASSWORD>
-- Run: sudo timedatectl set-ntp true (for synchronizing the system clock)
-- Run: sudo pacman -Syu (S for sync, Y for db refreshing, U for updating all packages)
-- Run: sudo pacman -S bluez bluez-utils bluez-deprecated-tools && sudo systemctl enable --now bluetooth
+```bash
+reflector --latest 5 --country US --protocol http,https --sort rate --save /etc/pacman.d/mirrorlist
+```
 
-17: Installing yay for enabling the AUR on our system
-- Run: git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si
+### 8. Install Base System (pacstrap)
+Install essential Arch Linux base packages to `/mnt`:
 
-# All Packages Manually Installed by Me (Output of command 'pacman -Qe')
-1password 8.12.30-21
-amd-ucode 20260622-1
-base 3-3
-base-devel 1-2
-bluetui 0.8.1-2
-bluez-deprecated-tools 5.87-2
-bluez-utils 5.87-2
-brightnessctl 0.5.1-3
-btop 1.4.7-1
-chromium 150.0.7871.186-1
-cryptomator 1.19.3-1
-efibootmgr 18-4
-ghostty 1.3.1-2
-git 2.55.0-1
-gnome-themes-extra 1:3.28-1
-grub 2:2.14-1
-htop 3.5.2-1
-hypridle 0.1.8-1
-hyprland 0.56.1-2
-hyprlock 0.9.6-1
-hyprpaper 0.8.4-5
-hyprpolkitagent 0.1.3-8
-hyprshot 1.3.0-4
-imv 5.0.1-2
-inotify-tools 4.25.9.0-1
-insync 3.9.11.60043-1
-kanshi 1.9.0-1
-kitty 0.48.1-1
-linux 7.1.5.arch1-2
-linux-firmware 20260622-1
-ly 1.4.1-1
-mako 1.11.0-1
-man-db 2.13.1-2
-man-pages 6.18-1
-mise 2026.7.17-1
-mpv 1:0.41.0-3
-nemo 6.6.4-1
-neovim 0.12.4-1
-networkmanager 1.58.0-1
-nmrs 1.6.0-1
-noto-fonts 1:2026.07.01-1
-noto-fonts-cjk 20240730-1
-noto-fonts-emoji 1:2.051-1
-nwg-look 1.1.1-3
-pavucontrol 1:6.2-1
-pipewire 1:1.6.8-1
-pipewire-alsa 1:1.6.8-1
-pipewire-jack 1:1.6.8-1
-pipewire-pulse 1:1.6.8-1
-qt5-wayland 5.15.19+kde+r55-1
-qt6-wayland 6.11.1-1
-qt6ct 0.11-7
-reflector 2023-5
-rofi 2.0.0-1
-starship 1.26.0-1
-ttf-jetbrains-mono-nerd 3.4.0-2
-unzip 6.0-23
-waybar 0.15.0-2
-wireplumber 0.5.15-1
-xdg-desktop-portal 1.22.1-2
-xdg-desktop-portal-hyprland 1.4.1-1
-yay 13.0.1-1
-yay-debug 13.0.1-1
+```bash
+pacstrap -K /mnt base linux linux-firmware networkmanager neovim base-devel amd-ucode git man-db man-pages reflector
+```
+
+> **Note:** If your computer uses an Intel processor, replace `amd-ucode` with `intel-ucode`.
+
+### 9. Generate fstab
+Generate the system `/etc/fstab` using UUIDs:
+
+```bash
+genfstab -U /mnt >> /mnt/etc/fstab
+cat /mnt/etc/fstab # Verify generated entries
+```
+
+### 10. Chroot & System Configuration
+Enter the newly installed system environment:
+
+```bash
+arch-chroot /mnt
+```
+
+Set Timezone and Hardware Clock:
+
+```bash
+ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+hwclock --systohc
+```
+
+### 11. Localization Setup
+Edit `/etc/locale.gen` to uncomment your preferred locales (e.g., `en_US.UTF-8` and `pt_BR.UTF-8`):
+
+```bash
+nvim /etc/locale.gen
+locale-gen
+echo "LANG=en_US.UTF-8" > /etc/locale.conf
+```
+
+### 12. Set Hostname
+Assign a hostname to your system:
+
+```bash
+echo "your-hostname" > /etc/hostname
+```
+
+### 13. User Creation & Privileges
+Set the system root password and create a new non-root user:
+
+```bash
+# Set Root Password
+passwd
+
+# Create user with wheel privileges
+useradd -m -G wheel,users <YOUR_USERNAME>
+passwd <YOUR_USERNAME>
+
+# Enable sudo privileges for wheel group
+EDITOR=nvim visudo
+```
+*In `visudo`, locate `%wheel ALL=(ALL:ALL) ALL` and uncomment the line.*
+
+### 14. Install Bootloader (GRUB)
+Install GRUB for UEFI systems:
+
+```bash
+pacman -S grub efibootmgr
+grub-install --target=x86_64-efi --efi-directory=/boot --bootloader-id=GRUB
+grub-mkconfig -o /boot/grub/grub.cfg
+```
+
+### 15. Exit Chroot & Reboot
+Exit the environment, unmount all partitions, and reboot into your fresh installation:
+
+```bash
+exit
+umount -R /mnt
+reboot
+```
+
+---
+
+## ⚡ Part 2: Automated Post-Installation & Dotfiles Setup
+
+After rebooting and logging into your user account, you can run the automated installation scripts to install all applications, configure services, and apply dotfiles.
+
+### 1. Connect to Internet
+Establish Wi-Fi connection using NetworkManager CLI:
+
+```bash
+nmcli device wifi connect <YOUR_WIFI_NAME> password <YOUR_WIFI_PASSWORD>
+```
+
+### 2. Clone Repository & Run Installer
+Clone this repository to your `~/Codes` directory and execute `install.sh`:
+
+```bash
+# Clone repo and change directory
+git clone https://github.com/aerthurg/dotfiles.git ~/Codes/dotfiles && cd ~/Codes/dotfiles
+
+# Make scripts executable and run
+chmod +x install.sh
+./install.sh
+```
+
+### What `install.sh` handles automatically:
+1. **`01-packages.sh`**: Updates system databases, installs all official packages defined in `packages/official.txt`, compiles `yay` (AUR helper) in `/tmp` if not installed, and installs AUR packages from `packages/aur.txt`.
+2. **`02-system-setup.sh`**: Enables core Systemd services (`NetworkManager.service`, `bluetooth.service`, `ly@tty2.service`, `fstrim.timer`).
+3. **`03-stow.sh`**: Uses **GNU Stow** to cleanly map configuration modules from `stow/` directly into your `$HOME` directory (`~/.config/`).
+
+---
+
+## 🧰 Part 3: Dotfiles Management with GNU Stow
+
+All configuration files are organized into isolated modules under the `stow/` directory.
+
+### Re-applying Dotfiles
+If you modify or add configurations to the repository, apply updates using GNU Stow:
+
+```bash
+cd ~/.dotfiles/stow
+stow -R -v --target="$HOME" <module-name>
+
+# Example for Hyprland:
+stow -R -v --target="$HOME" hypr
+```
+
+### Adding New Configurations
+1. Create a directory inside `stow/` matching your app name (e.g., `stow/appname/.config/appname`).
+2. Move your configuration directory inside.
+3. Run `stow -R -v --target="$HOME" appname`.
+
+---
+
+## 📦 Software Stack Summary
+
+* **Window Manager / Compositor:** Hyprland
+* **Display Manager / Login:** Ly
+* **Status Bar:** Waybar
+* **Application Launcher:** Rofi (Wayland)
+* **Terminal:** Ghostty
+* **Shell & Prompt:** Starship, Mise
+* **Text Editor:** Neovim (LazyVim)
+* **File Manager:** Nemo
+* **Theme & Appearance:** GTK-3.0, GTK-4.0, nwg-look, qt6ct
+* **Audio:** Pipewire, Wireplumber, Pavucontrol
+* **Notifications & Lock:** Mako, Hyprlock, Hypridle
+
