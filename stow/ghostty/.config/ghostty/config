@@ -1,0 +1,25 @@
+# Font
+font-family = JetBrainsMono Nerd Font Propo
+font-size = 13
+
+# Window
+window-padding-x = 5
+window-padding-y = 5
+window-padding-balance = true
+theme = Solarized Dark Patched
+background-opacity = 0.90
+
+# Cursor
+cursor-style = "block"
+cursor-style-blink = false
+
+# Keyboard bindings
+keybind = ctrl+alt+h=goto_split:left
+keybind = ctrl+alt+j=goto_split:bottom
+keybind = ctrl+alt+k=goto_split:top
+keybind = ctrl+alt+l=goto_split:right
+
+# Mouse scrolling
+mouse-scroll-multiplier = 0.95
+
+# Fix general slowness on hyprland (pulled from the official omarchy repo)

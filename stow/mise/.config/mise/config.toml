@@ -1,0 +1,8 @@
+[tools]
+rust = "latest"
+uv = "latest"
+node = "lts"
+python = "3.12"
+
+[settings]
+experimental = true
