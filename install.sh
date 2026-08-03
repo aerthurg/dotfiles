@@ -16,10 +16,10 @@ chmod +x "$DOTFILES_DIR"/scripts/*.sh
 "$DOTFILES_DIR/scripts/02-system-setup.sh"
 "$DOTFILES_DIR/scripts/03-stow.sh"
 
-log_info "Finishing development environment installation..."
+log_info "Finishing development environment build..."
 
-echo 'eval "$(starship init bash)"'
-echo 'eval "$(mise activate bash)"'
+echo 'eval "$(starship init bash)"' >>~/.bashrc
+echo 'eval "$(mise activate bash)"' >>~/.bashrc
 mise install
 
 log_success "Development environment successfully installed!"
