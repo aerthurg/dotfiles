@@ -57,3 +57,4 @@ libayatana-appindicator
 stow
 docker
 docker-compose
+inotify-tools
