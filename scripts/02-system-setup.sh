@@ -10,5 +10,6 @@ sudo timedatectl set-ntp true
 log_info "Enabling system services..."
 sudo systemctl enable bluetooth
 sudo systemctl enable ly@tty2
+sudo systemctl enable docker.service
 
 log_success "System configuration and services enabled successfully!"
