@@ -26,6 +26,7 @@ hl.monitor({
 	scale = "auto",
 })
 
+-- Monitors are now being managed by Kanshi
 -- hl.monitor({
 -- 	output = "eDP-1",
 -- 	mode = "1920x1080@60.01Hz",
