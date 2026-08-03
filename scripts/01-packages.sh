@@ -24,6 +24,16 @@ else
 fi
 
 log_info "Installing AUR packages..."
-yay -S --needed --noconfirm - <"$DOTFILES_DIR/packages/aur.txt"
+yay -S --needed --noconfirm --removemake - <"$DOTFILES_DIR/packages/aur.txt"
+
+log_info "Cleaning up build dependencies and orphan packages..."
+
+ORPHANS=$(pacman -Qtdq 2>/dev/null || true)
+if [[ -n "$ORPHANS" ]]; then
+    sudo pacman -Rns $ORPHANS --noconfirm
+fi
+
+log_info "Cleaning yay build cache..."
+yay -Sc --noconfirm
 
 log_success "All packages were installed successfully!"

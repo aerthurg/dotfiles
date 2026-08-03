@@ -8,7 +8,6 @@ log_info "Setting up system clock synchronization..."
 sudo timedatectl set-ntp true
 
 log_info "Enabling system services..."
-sudo systemctl enable NetworkManager
 sudo systemctl enable bluetooth
 sudo systemctl enable ly@tty2
 
