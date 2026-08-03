@@ -1,3 +1,4 @@
+nmrs
 1password
 insync
 cryptomator

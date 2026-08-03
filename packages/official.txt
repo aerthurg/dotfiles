@@ -32,7 +32,6 @@ mpv
 nemo
 neovim
 networkmanager
-nmrs
 noto-fonts
 noto-fonts-cjk
 noto-fonts-emoji
