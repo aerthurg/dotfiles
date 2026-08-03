@@ -167,8 +167,5 @@ configuration {
   }
 }
 
-//@theme "/home/aerthurg/.local/share/rofi/themes/spotlight-dark.rasi"
 
-//@theme "/usr/share/rofi/themes/solarized_alternate.rasi"
-
-@theme "/home/aerthurg/.local/share/rofi/themes/spotlight-dark.rasi"
+@theme "~/.local/share/rofi/themes/spotlight-dark.rasi"

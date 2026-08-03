@@ -23,3 +23,4 @@ keybind = ctrl+alt+l=goto_split:right
 mouse-scroll-multiplier = 0.95
 
 # Fix general slowness on hyprland (pulled from the official omarchy repo)
+async-backend = epoll

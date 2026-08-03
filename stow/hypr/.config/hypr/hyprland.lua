@@ -26,19 +26,19 @@ hl.monitor({
 	scale = "auto",
 })
 
-hl.monitor({
-	output = "eDP-1",
-	mode = "1920x1080@60.01Hz",
-	position = "auto",
-	scale = "1",
-})
-
-hl.monitor({
-	output = "HDMI-A-1",
-	mode = "3840x2160@60.01Hz",
-	position = "auto",
-	scale = "1",
-})
+-- hl.monitor({
+-- 	output = "eDP-1",
+-- 	mode = "1920x1080@60.01Hz",
+-- 	position = "auto",
+-- 	scale = "1",
+-- })
+--
+-- hl.monitor({
+-- 	output = "HDMI-A-1",
+-- 	mode = "3840x2160@60.01Hz",
+-- 	position = "auto",
+-- 	scale = "1",
+-- })
 
 ---------------------
 ---- MY PROGRAMS ----

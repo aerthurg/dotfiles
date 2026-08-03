@@ -3,9 +3,7 @@
     "modules-left": ["hyprland/workspaces", "hyprland/window", "hyprland/submap"],
     "modules-center": ["clock"],
     "modules-right": ["tray", "network", "bluetooth", "hyprland/language", "cpu", "memory", "pulseaudio", "battery"],
-    "hyprland/window": {
-        "max-length": 50
-    },
+
     "battery": {
 	"interval": 60,
 	"format": "{icon} {capacity}%",
@@ -13,6 +11,7 @@
 		"default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
 		"charging": ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
 	}
+
     },
     "bluetooth": {
 	"format": "",
@@ -23,18 +22,21 @@
 	"tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
 	"on-click": "exec ghostty --title=bluetui -e bluetui"
     },
+
     "cpu": {
 	"interval": 10,
 	"format": " {}%",
 	"max-length": 10,
 	"on-click": "exec ghostty --title=btop -e btop"
     },
+
     "memory": {
 	"interval": 30,
 	"format": " {percentage}%",
 	"tooltip-format": "{used:0.1f}G/{total:0.1f}G used",
 	"on-click": "exec ghostty --title=htop -e htop"
     },
+
     "network": {
 	"format": "",
 	"format-wifi": "",
@@ -48,6 +50,7 @@
 	"max-length": 50,
 	"on-click": "exec nmrs"
     },
+
     "clock": {
         "format": " {:%a, %d. %b %I:%M %p}",
         "tooltip-format": "<tt><small>{calendar}</small></tt>",
@@ -57,23 +60,28 @@
             }
         }
     },
+
     "pulseaudio": {
 	"format": "{icon} {volume}%",
 	"format-muted": "",
 	"format-icons": {
 		"default": ["", ""]
 	},
+
 	"scroll-step": 1,
 	"on-click": "pavucontrol"
     },
+
     "tray": {
 	"icon-size": 21,
 	"spacing": 10	
     },
+
     "hyprland/window": {
 	"format": {},
 	"max-length": 40
     },
+
     "hyprland/language": {
         "format": "󰌌 {}",
         "format-en": "US",
