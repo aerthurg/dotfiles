@@ -55,3 +55,5 @@ xdg-desktop-portal
 xdg-desktop-portal-hyprland
 libayatana-appindicator
 stow
+docker
+docker-compose
