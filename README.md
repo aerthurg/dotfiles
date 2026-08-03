@@ -218,6 +218,7 @@ After rebooting and logging into your user account, you can run the automated in
 Establish Wi-Fi connection using NetworkManager CLI:
 
 ```bash
+systemctl enable --now NetworkManager
 nmcli device wifi connect <YOUR_WIFI_NAME> password <YOUR_WIFI_PASSWORD>
 ```
 
