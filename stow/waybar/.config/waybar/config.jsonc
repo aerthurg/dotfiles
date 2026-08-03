@@ -1,9 +1,11 @@
 {
+    // Waybar global configs
     "layer": "top",
     "modules-left": ["hyprland/workspaces", "hyprland/window", "hyprland/submap"],
     "modules-center": ["clock"],
     "modules-right": ["tray", "network", "bluetooth", "hyprland/language", "cpu", "memory", "pulseaudio", "battery"],
 
+    // Waybar modules declaration
     "battery": {
 	"interval": 60,
 	"format": "{icon} {capacity}%",
@@ -11,8 +13,8 @@
 		"default": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
 		"charging": ["󰢟", "󰢜", "󰂆", "󰂇", "󰂈", "󰢝", "󰂉", "󰢞", "󰂊", "󰂋", "󰂅"]
 	}
-
     },
+
     "bluetooth": {
 	"format": "",
 	"format-disabled": "", // an empty format will hide the module
