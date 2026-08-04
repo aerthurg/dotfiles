@@ -58,3 +58,6 @@ stow
 docker
 docker-compose
 inotify-tools
+qemu-base
+libvirt
+virt-manager
