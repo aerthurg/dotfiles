@@ -5,38 +5,23 @@
 ![Wayland](https://img.shields.io/badge/Display-Wayland-red)
 ![GNU Stow](https://img.shields.io/badge/Dotfiles-GNU_Stow-informational)
 
-This repository contains a complete guide for a manual base Arch Linux installation, as well as modular post-installation scripts and dotfiles managed with **GNU Stow** to fully replicate my Hyprland desktop environment on any fresh installation.
+This repository contains a complete guide for a manual base Arch Linux installation, as well as modular post-installation scripts and dotfiles managed with **GNU Stow** to fully replicate my Hyprland desktop environment on any fresh Arch installation.
 
 ---
 
-## 🛠 Repository Architecture
+## 📦 Software Stack Summary
 
-This repository separates core system installation scripts, declarative package declarations, and dotfiles:
-
-```text
-dotfiles/
-├── install.sh                  # Main entrypoint script
-├── README.md                   # Installation guide & documentation
-├── lib/
-│   └── utils.sh                # Shared logging and utility helper functions
-├── packages/
-│   ├── official.txt            # Pacman packages list
-│   └── aur.txt                 # AUR packages list
-├── scripts/
-│   ├── 01-packages.sh          # System updates, pacman packages & yay installation
-│   ├── 02-system-setup.sh      # Services activation (NetworkManager, Bluetooth, Ly)
-│   └── 03-stow.sh              # Automatic symlinking of configs via GNU Stow
-└── stow/                       # Dotfiles directories mapped to $HOME
-    ├── ghostty/
-    ├── gtk/
-    ├── hypr/
-    ├── mise/
-    ├── nvim/
-    ├── rofi/
-    ├── starship/
-    ├── system/
-    └── waybar/
-```
+* **Window Manager / Compositor:** Hyprland
+* **Display Manager / Login:** Ly
+* **Status Bar:** Waybar
+* **Application Launcher:** Rofi (Wayland)
+* **Terminal:** Ghostty
+* **Shell & Prompt:** Starship, Mise
+* **Text Editor:** Neovim (LazyVim)
+* **File Manager:** Nemo
+* **Theme & Appearance:** GTK-3.0, GTK-4.0, nwg-look, qt6ct
+* **Audio:** Pipewire, Wireplumber, Pavucontrol
+* **Notifications & Lock:** Mako, Hyprlock, Hypridle
 
 ---
 
@@ -261,19 +246,4 @@ stow -R -v --target="$HOME" hypr
 2. Move your configuration directory inside.
 3. Run `stow -R -v --target="$HOME" appname`.
 
----
-
-## 📦 Software Stack Summary
-
-* **Window Manager / Compositor:** Hyprland
-* **Display Manager / Login:** Ly
-* **Status Bar:** Waybar
-* **Application Launcher:** Rofi (Wayland)
-* **Terminal:** Ghostty
-* **Shell & Prompt:** Starship, Mise
-* **Text Editor:** Neovim (LazyVim)
-* **File Manager:** Nemo
-* **Theme & Appearance:** GTK-3.0, GTK-4.0, nwg-look, qt6ct
-* **Audio:** Pipewire, Wireplumber, Pavucontrol
-* **Notifications & Lock:** Mako, Hyprlock, Hypridle
 
