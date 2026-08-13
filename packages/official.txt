@@ -62,3 +62,5 @@ qemu-base
 libvirt
 virt-manager
 discord
+lazygit
+lazydocker
