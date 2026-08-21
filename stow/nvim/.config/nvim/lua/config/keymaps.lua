@@ -3,3 +3,11 @@
 -- Add any additional keymaps here
 
 vim.keymap.set("n", "<leader>wh", "<C-w>h", { desc = "Move focus to the left window" })
+
+vim.keymap.set("n", "<leader>kd", function()
+    LazyVim.terminal.open({ "lazydocker" }, {
+        cwd = LazyVim.root(),
+        esc_esc = false,
+        ctrl_hjkl = false,
+    })
+end, { desc = "LazyDocker (Root Dir)" })
