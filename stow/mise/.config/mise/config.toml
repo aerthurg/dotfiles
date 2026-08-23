@@ -3,7 +3,6 @@ rust = "latest"
 uv = "latest"
 node = "lts"
 python = "3.12"
-ruby = "4.0.6"
 
 [settings]
 experimental = true
