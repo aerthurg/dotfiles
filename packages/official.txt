@@ -64,3 +64,6 @@ virt-manager
 discord
 lazygit
 lazydocker
+fuse2
+ffmpeg
+yt-dlp
