@@ -4,6 +4,8 @@ return {
         picker = {
             sources = {
                 explorer = {
+                    focus = "input",
+                    auto_close = true,
                     layout = {
                         preset = "default",
                         preview = true,
