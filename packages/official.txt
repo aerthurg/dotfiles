@@ -67,3 +67,4 @@ lazydocker
 fuse2
 ffmpeg
 yt-dlp
+fd
