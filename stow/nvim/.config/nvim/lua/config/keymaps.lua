@@ -2,8 +2,7 @@
 -- Default keymaps that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/keymaps.lua
 -- Add any additional keymaps here
 
-vim.keymap.set("n", "<leader>wh", "<C-w>h", { desc = "Move focus to the left window" })
-
+-- Lazydocker keymap
 vim.keymap.set("n", "<leader>kd", function()
     LazyVim.terminal.open({ "lazydocker" }, {
         cwd = LazyVim.root(),
@@ -11,3 +10,12 @@ vim.keymap.set("n", "<leader>kd", function()
         ctrl_hjkl = false,
     })
 end, { desc = "LazyDocker (Root Dir)" })
+
+-- File explorer and finder keymap
+vim.keymap.set("n", "<leader>ff", function()
+    Snacks.picker.explorer()
+end, { desc = "Explorer (Snacks)" })
+
+-- Disabled keymaps
+vim.keymap.set("n", "<leader>e", "<nop>", { desc = "Disabled" })
+vim.keymap.set("n", "<leader><space>", "<nop>", { desc = "Disabled" })
