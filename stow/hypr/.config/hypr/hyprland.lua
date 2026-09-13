@@ -49,8 +49,8 @@ hl.monitor({
 local terminal = "ghostty"
 local fileManager = "nemo"
 local browser = "chromium"
+local editor =  "zeditor"
 local supernotes = browser .. " --app=https://supernotes.app"
-local gemini = browser .. " --app=https://gemini.google.com"
 local menu = "rofi -show drun -show-icons"
 local runner = "rofi -show run"
 
@@ -280,7 +280,7 @@ hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(supernotes))
-hl.bind(mainMod .. " + A", hl.dsp.exec_cmd(gemini))
+hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(editor))
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(secondMod .. " + Space", hl.dsp.exec_cmd(runner))
 hl.bind(secondMod .. " + P", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
