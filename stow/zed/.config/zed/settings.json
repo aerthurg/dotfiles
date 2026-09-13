@@ -7,6 +7,8 @@
 // custom settings, run `zed: open default settings` from the
 // command palette (cmd-shift-p / ctrl-shift-p)
 {
+  "restore_on_startup": "launchpad",
+  "default_open_behavior": "new_window",
   "relative_line_numbers": "enabled",
   "autosave": "on_focus_change",
   "toolbar": {
