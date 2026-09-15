@@ -68,3 +68,7 @@ yt-dlp
 zed
 nano
 texlive
+texlab
+texlive-binextra
+zathura
+zathura-pdf-mupdf
