@@ -67,3 +67,4 @@ ffmpeg
 yt-dlp
 zed
 nano
+texlive
