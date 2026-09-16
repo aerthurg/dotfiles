@@ -72,3 +72,4 @@ texlab
 texlive-binextra
 zathura
 zathura-pdf-mupdf
+zip
