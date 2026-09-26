@@ -1,9 +1,46 @@
 {
     // Waybar global configs
     "layer": "top",
-    "modules-left": ["hyprland/workspaces", "hyprland/window", "hyprland/submap"],
+    "modules-left": ["custom/arch", "hyprland/workspaces", "hyprland/window", "hyprland/submap"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "network", "bluetooth", "hyprland/language", "cpu", "memory", "pulseaudio", "battery"],
+    "modules-right": ["tray", "group/connectivity", "group/hardware"],
+
+    // Custom Arch icon module
+    "custom/arch": {
+        "format": "󰣇",
+        "tooltip": false
+    },
+
+    // Mini separator dot
+    "custom/separator": {
+        "format": "•",
+        "tooltip": false
+    },
+
+    // Groups declaration
+    "group/connectivity": {
+        "orientation": "horizontal",
+        "modules": [
+            "network",
+            "custom/separator",
+            "bluetooth",
+            "custom/separator",
+            "hyprland/language"
+        ]
+    },
+
+    "group/hardware": {
+        "orientation": "horizontal",
+        "modules": [
+            "cpu",
+            "custom/separator",
+            "memory",
+            "custom/separator",
+            "pulseaudio",
+            "custom/separator",
+            "battery"
+        ]
+    },
 
     // Waybar modules declaration
     "battery": {
@@ -17,7 +54,7 @@
 
     "bluetooth": {
 	"format": "",
-	"format-disabled": "", // an empty format will hide the module
+	"format-disabled": "",
 	"format-connected": " {num_connections}",
 	"tooltip-format": "{controller_alias}\t{controller_address}",
 	"tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{device_enumerate}",
@@ -43,7 +80,6 @@
 	"format": "",
 	"format-wifi": "",
 	"format-ethernet": "",
-	"format-disconnected": "", //An empty format will hide the module.
 	"format-disconnected": "",
 	"tooltip-format": "{ifname} via {gwaddr}",
 	"tooltip-format-wifi": "{essid} ({signalStrength}%) ",
