@@ -74,3 +74,4 @@ zip
 openssl
 pkg-config
 luarocks
+fzf
