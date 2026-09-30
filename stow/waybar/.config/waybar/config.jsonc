@@ -3,7 +3,7 @@
     "layer": "top",
     "modules-left": ["custom/arch", "hyprland/workspaces", "hyprland/window", "hyprland/submap"],
     "modules-center": ["clock"],
-    "modules-right": ["tray", "group/connectivity", "group/hardware"],
+    "modules-right": ["tray", "custom/pomodoro", "group/connectivity", "group/hardware"],
 
     // Custom Arch icon module
     "custom/arch": {
@@ -15,6 +15,17 @@
     "custom/separator": {
         "format": "•",
         "tooltip": false
+    },
+
+    // Pomodoro module
+    "custom/pomodoro": {
+        "format": "{}",
+        "return-type": "json",
+        "exec": "~/Codes/dotfiles/stow/waybar/.config/waybar/scripts/pomodoro.py status",
+        "interval": 1,
+        "on-click": "~/Codes/dotfiles/stow/waybar/.config/waybar/scripts/pomodoro.py toggle",
+        "on-click-right": "~/Codes/dotfiles/stow/waybar/.config/waybar/scripts/pomodoro.py reset",
+        "on-click-middle": "~/Codes/dotfiles/stow/waybar/.config/waybar/scripts/pomodoro.py skip"
     },
 
     // Groups declaration

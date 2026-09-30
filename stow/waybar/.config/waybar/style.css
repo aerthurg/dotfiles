@@ -44,6 +44,7 @@ window#waybar {
 }
 
 #tray,
+#custom-pomodoro,
 .modules-right > widget > #hardware,
 .modules-right > widget > #connectivity {
     border-radius: 8px;
@@ -54,6 +55,23 @@ window#waybar {
 
 #tray {
     padding: 5px 8px;
+}
+
+#custom-pomodoro {
+    padding: 5px 10px;
+}
+
+#custom-pomodoro.work {
+    color: @highlight;
+}
+
+#custom-pomodoro.short_break,
+#custom-pomodoro.long_break {
+    color: rgba(227, 81, 73, 1);
+}
+
+#custom-pomodoro.paused {
+    color: @dark5;
 }
 
 /* Reset individual module margins and padding inside groups */
