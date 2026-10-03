@@ -75,3 +75,6 @@ openssl
 pkg-config
 luarocks
 fzf
+wxwidgets-gtk3
+glu
+mesa
