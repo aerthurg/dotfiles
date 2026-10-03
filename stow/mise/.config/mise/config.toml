@@ -4,7 +4,7 @@ uv = "latest"
 node = "lts"
 python = "3.12"
 elixir = "latest"
-erlang = "latest"
+erlang = "29.1"
 
 [settings]
 experimental = true
