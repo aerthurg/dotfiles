@@ -79,3 +79,5 @@ wxwidgets-gtk3
 glu
 mesa
 keepassxc
+rclone
+fuse3

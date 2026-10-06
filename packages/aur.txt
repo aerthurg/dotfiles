@@ -1,4 +1,3 @@
 nmrs
-1password
-insync
 cryptomator
+filen-desktop-bin
