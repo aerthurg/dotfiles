@@ -12,5 +12,6 @@ sudo systemctl enable bluetooth
 sudo systemctl enable ly@tty2
 sudo systemctl enable docker.service
 sudo systemctl enable libvirtd
+sudo systemctl enable ssh-agent
 
 log_success "System configuration and services enabled successfully!"
