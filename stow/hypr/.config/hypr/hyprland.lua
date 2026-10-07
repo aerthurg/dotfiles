@@ -49,7 +49,6 @@ hl.monitor({
 local terminal = "ghostty"
 local fileManager = "nemo"
 local browser = "chromium"
-local editor =  "zeditor"
 local supernotes = browser .. " --app=https://supernotes.app"
 local menu = "rofi -show drun -show-icons"
 local runner = "rofi -show run"
@@ -64,6 +63,7 @@ local runner = "rofi -show run"
 -- Or execute your favorite apps at launch like this:
 --
 hl.on("hyprland.start", function()
+	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SSH_ASKPASS")
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("wpaperd -d")
 	hl.exec_cmd("hypridle")
@@ -81,6 +81,9 @@ end)
 hl.env("XCURSOR_SIZE", "24")
 hl.env("HYPRCURSOR_SIZE", "24")
 hl.env("QT_QPA_PLATFORMTHEME", "qt6ct")
+hl.env("SSH_AUTH_SOCK", (os.getenv("XDG_RUNTIME_DIR") or "/run/user/1000") .. "/ssh-agent.socket")
+hl.env("SSH_ASKPASS", "/usr/bin/ksshaskpass")
+hl.env("SSH_ASKPASS_REQUIRE", "force")
 
 -----------------------
 ----- PERMISSIONS -----
@@ -280,7 +283,6 @@ hl.bind(mainMod .. " + T", hl.dsp.exec_cmd(terminal))
 hl.bind(mainMod .. " + F", hl.dsp.exec_cmd(fileManager))
 hl.bind(mainMod .. " + B", hl.dsp.exec_cmd(browser))
 hl.bind(mainMod .. " + N", hl.dsp.exec_cmd(supernotes))
-hl.bind(mainMod .. " + E", hl.dsp.exec_cmd(editor))
 hl.bind(mainMod .. " + Space", hl.dsp.exec_cmd(menu))
 hl.bind(secondMod .. " + Space", hl.dsp.exec_cmd(runner))
 hl.bind(secondMod .. " + P", hl.dsp.exec_cmd("hyprshot -m region --clipboard-only"))
