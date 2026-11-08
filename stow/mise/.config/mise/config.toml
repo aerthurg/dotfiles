@@ -3,8 +3,10 @@ rust = "latest"
 uv = "latest"
 node = "lts"
 python = "3.12"
-elixir = "latest"
-erlang = "29.1"
+go = "latest"
+elixir = "1.20.4-otp-29"
+erlang = "29.1.2"
+bun = "1.4.4"
 
 [settings]
 experimental = true
