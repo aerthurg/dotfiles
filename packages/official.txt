@@ -81,3 +81,4 @@ mesa
 keepassxc
 rclone
 fuse3
+zellij
