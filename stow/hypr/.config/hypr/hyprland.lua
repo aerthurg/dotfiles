@@ -65,6 +65,7 @@ local runner = "rofi -show run"
 --
 hl.on("hyprland.start", function()
 	hl.exec_cmd("dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP SSH_ASKPASS")
+	hl.exec_cmd("systemctl --user start gnome-keyring-daemon.service")
 	hl.exec_cmd("waybar")
 	hl.exec_cmd("wpaperd -d")
 	hl.exec_cmd("hypridle")
