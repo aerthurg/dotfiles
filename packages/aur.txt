@@ -1,4 +1,3 @@
 nmrs
 cryptomator
-filen-desktop-bin
-livebook
+insync
