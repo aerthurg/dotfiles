@@ -80,3 +80,4 @@ fuse3
 zellij
 inkscape
 seahorse
+opencode
