@@ -3,8 +3,6 @@ rust = "latest"
 uv = "latest"
 node = "lts"
 python = "3.12"
-go = "latest"
-bun = "1.4.4"
 
 [settings]
 experimental = true
