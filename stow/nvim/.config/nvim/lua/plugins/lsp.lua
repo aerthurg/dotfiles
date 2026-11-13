@@ -5,11 +5,13 @@ return {
       tailwindcss = {
         init_options = {
           userLanguages = {
-            elixir = "html-eex",
-            eelixir = "html-eex",
-            heex = "html-eex",
+            rust = "html",
+            askama = "html",
+            jinja = "html",
+            jinja2 = "html",
           },
         },
+        filetypes = { "html", "rust", "askama", "jinja", "jinja2" },
       },
     },
   },
