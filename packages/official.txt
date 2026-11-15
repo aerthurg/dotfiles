@@ -81,3 +81,5 @@ zellij
 inkscape
 seahorse
 opencode
+postgresql-libs
+sqlite
