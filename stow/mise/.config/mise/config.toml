@@ -3,6 +3,8 @@ rust = "latest"
 uv = "latest"
 node = "lts"
 python = "3.12"
+erlang = "latest"
+elixir = "latest"
 
 [settings]
 experimental = true
