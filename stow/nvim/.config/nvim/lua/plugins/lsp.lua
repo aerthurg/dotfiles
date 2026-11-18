@@ -4,11 +4,24 @@ return {
     opts = {
       servers = {
         tailwindcss = {
+          filetypes_include = { "rust" },
           init_options = {
             userLanguages = {
-              elixir = "html",
-              eelixir = "html",
-              heex = "html",
+              rust = "html",
+            },
+          },
+          settings = {
+            tailwindCSS = {
+              includeLanguages = {
+                rust = "html",
+              },
+              experimental = {
+                classRegex = {
+                  [[class="([^"]*)"]],
+                  [[class=\("([^"]*)"]],
+                  [[class:([a-zA-Z0-9\-:]+)=]],
+                },
+              },
             },
           },
         },
