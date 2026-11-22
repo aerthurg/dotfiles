@@ -31,6 +31,22 @@ return {
             },
           },
         },
+        pyright = {
+          settings = { python = {} },
+          before_init = function(_, config)
+            local root = config.root_dir
+            if not root then
+              return
+            end
+            for _, dir in ipairs({ ".venv", "venv" }) do
+              local python = root .. "/" .. dir .. "/bin/python"
+              if vim.uv.fs_stat(python) then
+                config.settings.python.pythonPath = python
+                return
+              end
+            end
+          end,
+        },
       },
     },
   },
